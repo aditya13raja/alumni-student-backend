@@ -2,6 +2,7 @@ package main
 
 import (
 	"alumni-student-backend/configs"
+	"alumni-student-backend/routes"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,19 +13,21 @@ func main() {
 	// Create new instance of fiber
 	app := fiber.New()
 
+	//---------------------------- GetEnv ---------------------------
 	// Get .env file
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	//---------------------------- Database ---------------------------
 	// Connect mongodb database
 	configs.ConnectDB()
+	defer configs.DisconnectDB()
 
-	// Check server running
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(201).SendString("hello")
-	})
+	//---------------------------- Routes ------------------------------
+	// Routes for auth
+	routes.AuthRoutes(app)
 
 	// get port number
 	Port := configs.GetPort()
