@@ -23,7 +23,7 @@ type User struct {
 	Degree      string             `json:"degree" bson:"degree"`
 	Major       string             `json:"major" bson:"major"`
 	PassingYear int                `json:"passing_year,omitempty" bson:"passing_year,omitempty"`
-	Username    string             `json:"user_name" bson:"user_name"`
+	Username    string             `json:"username" bson:"username"`
 	Password    string             `json:"password" bson:"password"`
 	Updated_at  time.Time          `json:"updated_at" bson:"updated_at"`
 	Created_at  time.Time          `json:"created_at" bson:"created_at"`
