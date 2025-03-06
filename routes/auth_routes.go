@@ -7,7 +7,7 @@ import (
 )
 
 func AuthRoutes(app *fiber.App) {
-	auth := app.Group("/auth")
+	auth := app.Group("/api/auth")
 
 	auth.Get("/test", func(c *fiber.Ctx) error {
 		return c.Status(200).JSON(fiber.Map{"message": "test route is working correctly!"})
