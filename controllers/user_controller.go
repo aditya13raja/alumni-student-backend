@@ -146,3 +146,12 @@ func SignIn(c *fiber.Ctx) error {
 		"user":    utils.FormatUserResponse(user),
 	})
 }
+
+// ------------------------------Sign Out------------------------------------
+func SignOut(c *fiber.Ctx) error {
+	utils.ClearAuthCookie(c)
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Logout successfull",
+	})
+}

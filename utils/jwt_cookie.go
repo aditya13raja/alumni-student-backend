@@ -16,3 +16,14 @@ func SetAuthCookie(c *fiber.Ctx, token string) {
 		SameSite: "Strict",
 	})
 }
+
+func ClearAuthCookie(c *fiber.Ctx) {
+	c.Cookie(&fiber.Cookie{
+		Name:     "access_token",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour * 1),
+		HTTPOnly: true,
+		Secure:   false, //TODO: set to true at time of hosting
+		SameSite: "Strict",
+	})
+}
