@@ -1,6 +1,6 @@
 package utils
 
-import "alumni-student-backend/models"
+import "github.com/aditya13raja/alumni-student-backend/models"
 
 // FormatUserResponse removes sensitive data like password
 func FormatUserResponse(user models.User) map[string]interface{} {

@@ -5,8 +5,6 @@
 *.log
 *.prof
 *.pb.go
-*.sum
-*.mod
 tmp/
 
 # Compiled object files and binaries

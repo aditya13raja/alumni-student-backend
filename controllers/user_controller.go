@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"alumni-student-backend/configs"
-	"alumni-student-backend/models"
-	"alumni-student-backend/utils"
+	"github.com/aditya13raja/alumni-student-backend/configs"
+	"github.com/aditya13raja/alumni-student-backend/models"
+	"github.com/aditya13raja/alumni-student-backend/utils"
 
 	"context"
 

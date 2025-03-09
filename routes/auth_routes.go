@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"alumni-student-backend/controllers"
+	"github.com/aditya13raja/alumni-student-backend/controllers"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,5 +15,5 @@ func AuthRoutes(app *fiber.App) {
 
 	auth.Post("/signup", controllers.SignUp)
 	auth.Post("/signin", controllers.SignIn)
-	auth.Post("/signout", controllers.SignOut)
+	auth.Get("/signout", controllers.SignOut)
 }

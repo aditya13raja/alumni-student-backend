@@ -1,10 +1,11 @@
 package configs
 
 import (
-	"alumni-student-backend/utils"
 	"context"
 	"log"
 	"os"
+
+	"github.com/aditya13raja/alumni-student-backend/utils"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

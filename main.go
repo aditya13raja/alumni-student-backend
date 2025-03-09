@@ -1,9 +1,10 @@
 package main
 
 import (
-	"alumni-student-backend/configs"
-	"alumni-student-backend/routes"
 	"log"
+
+	"github.com/aditya13raja/alumni-student-backend/configs"
+	"github.com/aditya13raja/alumni-student-backend/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
