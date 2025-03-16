@@ -26,9 +26,14 @@ func main() {
 	configs.ConnectDB()
 	defer configs.DisconnectDB()
 
+	//---------------------------- PusherDB --------------------------
+	configs.InitPusher()
+
 	//---------------------------- Routes ------------------------------
 	// Routes for auth
 	routes.AuthRoutes(app)
+
+	// Routes for chat
 
 	// get port number
 	Port := configs.GetPort()
