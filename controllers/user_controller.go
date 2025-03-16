@@ -155,3 +155,8 @@ func SignOut(c *fiber.Ctx) error {
 		"message": "Logout successfull",
 	})
 }
+
+// ------------------------------User Profile--------------------------------
+func UserProfile(c *fiber.Ctx) error {
+	return nil
+}
