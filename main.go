@@ -33,6 +33,9 @@ func main() {
 	// Routes for auth
 	routes.AuthRoutes(app)
 
+	// Routes for user profile
+	routes.UserRoutes(app)
+
 	// Routes for chat
 
 	// get port number

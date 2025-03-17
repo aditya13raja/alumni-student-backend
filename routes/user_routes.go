@@ -7,13 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func AuthRoutes(app *fiber.App) {
-	auth := app.Group("/api/auth")
-
-	auth.Post("/signup", controllers.SignUp)
-	auth.Post("/signin", controllers.SignIn)
-	auth.Get("/signout", controllers.SignOut)
-
+func UserRoutes(app *fiber.App) {
 	protected := app.Group("/api/protected", middleware.AuthMiddleware)
 
 	protected.Get("/profile", controllers.UserProfile)
