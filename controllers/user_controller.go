@@ -158,5 +158,7 @@ func SignOut(c *fiber.Ctx) error {
 
 // ------------------------------User Profile--------------------------------
 func UserProfile(c *fiber.Ctx) error {
-	return nil
+	return c.Status(200).JSON(fiber.Map{
+		"user": "successfull",
+	})
 }
