@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/aditya13raja/alumni-student-backend/configs"
 	"github.com/aditya13raja/alumni-student-backend/routes"
@@ -15,10 +16,12 @@ func main() {
 	app := fiber.New()
 
 	//---------------------------- GetEnv ---------------------------
-	// Get .env file
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal(err)
+	// Load .env file only in local development
+	if _, err := os.Stat(".env"); err == nil {
+		err = godotenv.Load(".env")
+		if err != nil {
+			log.Println("Error loading .env file:", err)
+		}
 	}
 
 	//---------------------------- Database ---------------------------
