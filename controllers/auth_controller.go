@@ -155,10 +155,3 @@ func SignOut(c *fiber.Ctx) error {
 		"message": "Logout successfull",
 	})
 }
-
-// ----------------------------- Test ---------------------------
-func Test(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Test working",
-	})
-}
