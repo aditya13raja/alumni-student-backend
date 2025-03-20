@@ -8,5 +8,6 @@ func FormatUserResponse(user models.User) map[string]interface{} {
 		"first_name": user.FirstName,
 		"last_name":  user.LastName,
 		"username":   user.Username,
+		"role":       user.Role,
 	}
 }
