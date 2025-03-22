@@ -41,6 +41,9 @@ func main() {
 
 	// Routes for chat
 
+	// Routes for user profile
+	routes.TopicsRoutes(app)
+
 	// get port number
 	Port := configs.GetPort()
 

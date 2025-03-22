@@ -11,11 +11,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// Create Collection for user
-var UserCollection *mongo.Collection
-
 // Create client for connecting to DB
-var client *mongo.Client
+var (
+	client *mongo.Client
+	DB     *mongo.Database
+)
+
+// Create Collection for user
+var (
+	UserCollection   *mongo.Collection
+	TopicsCollection *mongo.Collection
+)
 
 func ConnectDB() {
 	// get uri from .env file
@@ -35,8 +41,12 @@ func ConnectDB() {
 
 	log.Println("Connected to MongoDB ✅")
 
-	// Create user collection for storing auth data
-	UserCollection = client.Database("alumni-student-db").Collection("users")
+	// Create database named alumni-student-db in mongodb database
+	DB = client.Database("alumni-student-db")
+
+	// Create collections for storing different types of data
+	UserCollection = DB.Collection("users")
+	TopicsCollection = DB.Collection("topics")
 }
 
 func DisconnectDB() {
