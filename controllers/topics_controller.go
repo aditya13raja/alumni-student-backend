@@ -6,6 +6,7 @@ import (
 
 	"github.com/aditya13raja/alumni-student-backend/configs"
 	"github.com/aditya13raja/alumni-student-backend/models"
+	"github.com/aditya13raja/alumni-student-backend/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -23,17 +24,8 @@ func CreateTopic(c *fiber.Ctx) error {
 	}
 
 	// Check if topic already exists
-	var existingTopic *models.Topics
-	err = configs.TopicsCollection.FindOne(
-		context.Background(),
-		bson.M{
-			"topic_name": req.TopicName,
-		},
-	).Decode(&existingTopic)
-	if err == nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Topic already exists",
-		})
+	if err := utils.CheckTopicExists(c, req.TopicName); err != nil {
+		return err
 	}
 
 	// Create topic

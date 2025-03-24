@@ -21,6 +21,7 @@ var (
 var (
 	UserCollection   *mongo.Collection
 	TopicsCollection *mongo.Collection
+	ChatsCollection  *mongo.Collection
 )
 
 func ConnectDB() {
@@ -47,6 +48,7 @@ func ConnectDB() {
 	// Create collections for storing different types of data
 	UserCollection = DB.Collection("users")
 	TopicsCollection = DB.Collection("topics")
+	ChatsCollection = DB.Collection("chats")
 }
 
 func DisconnectDB() {

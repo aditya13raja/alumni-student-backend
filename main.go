@@ -40,6 +40,7 @@ func main() {
 	routes.UserRoutes(app)
 
 	// Routes for chat
+	routes.ChatRoutes(app)
 
 	// Routes for user profile
 	routes.TopicsRoutes(app)
