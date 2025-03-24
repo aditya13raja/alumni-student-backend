@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/aditya13raja/alumni-student-backend/configs"
 	"github.com/aditya13raja/alumni-student-backend/models"
 	"github.com/aditya13raja/alumni-student-backend/utils"
 
@@ -36,7 +35,7 @@ func CreateTopic(c *fiber.Ctx) error {
 	}
 
 	//Create topic in database
-	_, err = configs.TopicsCollection.InsertOne(context.Background(), topic)
+	_, err = utils.TopicsCollection.InsertOne(context.Background(), topic)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Error creating topic"})
 
@@ -51,7 +50,7 @@ func GetAllTopics(c *fiber.Ctx) error {
 	var topics []*models.Topics
 
 	// Save all topics to the topics array(slice) created
-	cursor, err := configs.TopicsCollection.Find(context.Background(), bson.M{})
+	cursor, err := utils.TopicsCollection.Find(context.Background(), bson.M{})
 	if err != nil {
 		return err
 	}

@@ -17,13 +17,6 @@ var (
 	DB     *mongo.Database
 )
 
-// Create Collection for user
-var (
-	UserCollection   *mongo.Collection
-	TopicsCollection *mongo.Collection
-	ChatsCollection  *mongo.Collection
-)
-
 func ConnectDB() {
 	// get uri from .env file
 	MongoDB_URI := os.Getenv("MONGODB_URI")
@@ -45,10 +38,8 @@ func ConnectDB() {
 	// Create database named alumni-student-db in mongodb database
 	DB = client.Database("alumni-student-db")
 
-	// Create collections for storing different types of data
-	UserCollection = DB.Collection("users")
-	TopicsCollection = DB.Collection("topics")
-	ChatsCollection = DB.Collection("chats")
+	// Create collections
+	utils.CreateCollection(DB)
 }
 
 func DisconnectDB() {

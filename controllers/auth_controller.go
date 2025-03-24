@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/aditya13raja/alumni-student-backend/configs"
 	"github.com/aditya13raja/alumni-student-backend/models"
 	"github.com/aditya13raja/alumni-student-backend/utils"
 
@@ -24,7 +23,7 @@ func SignUp(c *fiber.Ctx) error {
 
 	// Check if email or username already exists
 	var existingUser models.User
-	err := configs.UserCollection.FindOne(
+	err := utils.UserCollection.FindOne(
 		context.Background(),
 		bson.M{"$or": []bson.M{
 			{"email": req.Email},
@@ -78,7 +77,7 @@ func SignUp(c *fiber.Ctx) error {
 	}
 
 	// Add user to mongodb
-	_, err = configs.UserCollection.InsertOne(context.Background(), user)
+	_, err = utils.UserCollection.InsertOne(context.Background(), user)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to create user",
@@ -115,7 +114,7 @@ func SignIn(c *fiber.Ctx) error {
 
 	// Find the user with requested username
 	var user models.User
-	err := configs.UserCollection.FindOne(context.Background(), bson.M{"username": req.Username}).Decode(&user)
+	err := utils.UserCollection.FindOne(context.Background(), bson.M{"username": req.Username}).Decode(&user)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Username not found",

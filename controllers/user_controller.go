@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/aditya13raja/alumni-student-backend/configs"
 	"github.com/aditya13raja/alumni-student-backend/models"
+	"github.com/aditya13raja/alumni-student-backend/utils"
 
 	"context"
 
@@ -21,7 +21,7 @@ func GetUserProfile(c *fiber.Ctx) error {
 	var user models.User
 
 	// Find the username in database
-	err := configs.UserCollection.FindOne(
+	err := utils.UserCollection.FindOne(
 		context.Background(),
 		bson.M{"username": username},
 		// Hide password

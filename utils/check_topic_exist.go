@@ -3,7 +3,6 @@ package utils
 import (
 	"context"
 
-	"github.com/aditya13raja/alumni-student-backend/configs"
 	"github.com/aditya13raja/alumni-student-backend/models"
 
 	"github.com/gofiber/fiber/v2"
@@ -16,7 +15,7 @@ func CheckTopicExists(c *fiber.Ctx, topic string) error {
 	var existingTopic *models.Topics
 
 	// Mongodb query to check if topic exists
-	err := configs.TopicsCollection.FindOne(
+	err := TopicsCollection.FindOne(
 		context.Background(),
 		bson.M{
 			"topic_name": topic,

@@ -10,4 +10,5 @@ func ChatRoutes(app *fiber.App) {
 	chat := app.Group("/api/chat")
 
 	chat.Post("/send", controllers.SendMessage)
+	chat.Get("/get/:topic", controllers.GetMessageByTopic)
 }
