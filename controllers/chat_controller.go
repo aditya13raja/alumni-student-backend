@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/aditya13raja/alumni-student-backend/configs"
@@ -26,6 +27,9 @@ func SendMessage(c *fiber.Ctx) error {
 	// Create id and timestamp for chat created
 	chat.ID = primitive.NewObjectID()
 	chat.Timestamp = time.Now()
+
+	// Conforms topic name to be in lowercase
+	chat.Topic = strings.ToLower(chat.Topic)
 
 	// Save chat to mongodb chat collection
 	_, err := utils.ChatsCollection.InsertOne(context.Background(), chat)
