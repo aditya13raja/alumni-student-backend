@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/aditya13raja/alumni-student-backend/models"
@@ -29,9 +30,10 @@ func CreateTopic(c *fiber.Ctx) error {
 
 	// Create topic
 	topic := models.Topics{
-		ID:        primitive.NewObjectID(),
-		TopicName: req.TopicName,
-		CreatedAt: time.Now(),
+		ID:               primitive.NewObjectID(),
+		TopicName:        strings.ReplaceAll(strings.TrimSpace(strings.ToLower(req.TopicName)), " ", "_"),
+		TopicDescription: req.TopicDescription,
+		CreatedAt:        time.Now(),
 	}
 
 	//Create topic in database
