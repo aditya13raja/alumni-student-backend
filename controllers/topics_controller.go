@@ -84,3 +84,41 @@ func GetAllTopics(c *fiber.Ctx) error {
 		"topics": topics,
 	})
 }
+
+func GetCategoryTopics(c *fiber.Ctx) error {
+	type CategoryRequest struct {
+		Category string `json:"category"`
+	}
+
+	var req CategoryRequest
+	if err := c.BodyParser(&req); err != nil || strings.TrimSpace(req.Category) == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid or missing category",
+		})
+	}
+
+	var topics []*models.Topics
+	cursor, err := utils.TopicsCollection.Find(context.Background(), bson.M{
+		"category": req.Category,
+	})
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to fetch topics",
+		})
+	}
+	defer cursor.Close(context.Background())
+
+	// Save all topics of the requested category
+	for cursor.Next(context.Background()) {
+		var topic *models.Topics
+		if err := cursor.Decode(&topic); err == nil {
+			topics = append(topics, topic)
+		}
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"topics": topics,
+	})
+
+}
