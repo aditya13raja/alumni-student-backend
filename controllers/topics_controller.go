@@ -86,20 +86,16 @@ func GetAllTopics(c *fiber.Ctx) error {
 }
 
 func GetCategoryTopics(c *fiber.Ctx) error {
-	type CategoryRequest struct {
-		Category string `json:"category"`
-	}
-
-	var req CategoryRequest
-	if err := c.BodyParser(&req); err != nil || strings.TrimSpace(req.Category) == "" {
+	category := c.Query("category")
+	if strings.TrimSpace(category) == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid or missing category",
+			"error": "Missing or invalid category parameter",
 		})
 	}
 
 	var topics []*models.Topics
 	cursor, err := utils.TopicsCollection.Find(context.Background(), bson.M{
-		"category": req.Category,
+		"category": category,
 	})
 
 	if err != nil {

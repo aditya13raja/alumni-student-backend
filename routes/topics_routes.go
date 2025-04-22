@@ -10,6 +10,6 @@ func TopicsRoutes(app *fiber.App) {
 
 	topics.Post("/create-topic", controllers.CreateTopic)
 	topics.Get("/get-topics", controllers.GetAllTopics)
-	topics.Post("/category-topics", controllers.GetCategoryTopics)
+	topics.Get("/", controllers.GetCategoryTopics)
 
 }
