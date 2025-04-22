@@ -15,7 +15,7 @@ import (
 
 func CreateTopic(c *fiber.Ctx) error {
 	// Parse the request
-	var req *models.Topics
+	var req models.Topics
 	err := c.BodyParser(&req)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -23,17 +23,33 @@ func CreateTopic(c *fiber.Ctx) error {
 		})
 	}
 
+	Topic := strings.ToLower(req.TopicName)
+
 	// Check if topic already exists
-	if err := utils.CheckTopicExists(c, req.TopicName); err != nil {
-		return err
+	var existingTopic models.Topics
+
+	// Mongodb query to check if topic exists
+	err = utils.TopicsCollection.FindOne(
+		context.Background(),
+		bson.M{
+			"topic_name": Topic,
+		},
+	).Decode(&existingTopic)
+
+	// If topic exist give error
+	if err == nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Topic already exists",
+		})
 	}
 
 	// Create topic
 	topic := models.Topics{
-		ID:               primitive.NewObjectID(),
-		TopicName:        strings.ReplaceAll(strings.TrimSpace(strings.ToLower(req.TopicName)), " ", "_"),
-		TopicDescription: req.TopicDescription,
-		CreatedAt:        time.Now(),
+		ID:            primitive.NewObjectID(),
+		TopicName:     Topic,
+		Category:      req.Category,
+		TopicFullName: req.TopicFullName,
+		CreatedAt:     time.Now(),
 	}
 
 	//Create topic in database
