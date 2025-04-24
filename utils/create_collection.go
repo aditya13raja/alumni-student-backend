@@ -8,6 +8,7 @@ var (
 	TopicsCollection     *mongo.Collection
 	ChatsCollection      *mongo.Collection
 	CategoriesCollection *mongo.Collection
+	BlogsCollection      *mongo.Collection
 )
 
 func CreateCollection(DB *mongo.Database) {
@@ -16,4 +17,5 @@ func CreateCollection(DB *mongo.Database) {
 	TopicsCollection = DB.Collection("topics")
 	ChatsCollection = DB.Collection("chats")
 	CategoriesCollection = DB.Collection("categories")
+	BlogsCollection = DB.Collection("blogs")
 }
