@@ -9,13 +9,15 @@ var (
 	ChatsCollection      *mongo.Collection
 	CategoriesCollection *mongo.Collection
 	BlogsCollection      *mongo.Collection
+	JobsCollection       *mongo.Collection
 )
 
+// Create collections for storing different types of data
 func CreateCollection(DB *mongo.Database) {
-	// Create collections for storing different types of data
 	UserCollection = DB.Collection("users")
 	TopicsCollection = DB.Collection("topics")
 	ChatsCollection = DB.Collection("chats")
 	CategoriesCollection = DB.Collection("categories")
 	BlogsCollection = DB.Collection("blogs")
+	JobsCollection = DB.Collection("jobs")
 }

@@ -51,6 +51,9 @@ func main() {
 	// Routes for blog
 	routes.BlogRoutes(app)
 
+	// Routes for jobs
+	routes.JobsRoutes(app)
+
 	// get port number
 	Port := configs.GetPort()
 
