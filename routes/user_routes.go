@@ -11,4 +11,6 @@ func UserRoutes(app *fiber.App) {
 	profile := app.Group("/api/user", utils.AuthMiddleware)
 
 	profile.Get("/:username", controllers.GetUserProfile)
+	profile.Put("/:username/update", controllers.UpdateUserProfile)
+	profile.Delete("/:username/delete", controllers.DeleteUserProfile)
 }

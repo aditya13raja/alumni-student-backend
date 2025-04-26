@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"time"
+
 	"github.com/aditya13raja/alumni-student-backend/models"
 	"github.com/aditya13raja/alumni-student-backend/utils"
 
@@ -36,5 +38,79 @@ func GetUserProfile(c *fiber.Ctx) error {
 
 	return c.Status(200).JSON(fiber.Map{
 		"user": user,
+	})
+}
+
+// ------------------------------Update Profile--------------------------------
+func UpdateUserProfile(c *fiber.Ctx) error {
+	// Get username from the URL
+	username := c.Params("username")
+
+	// Parse the request body into a user struct
+	var updatedData models.User
+	if err := c.BodyParser(&updatedData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid request body",
+		})
+	}
+
+	// Only allow updatable fields (for security)
+	update := bson.M{
+		"first_name":   updatedData.FirstName,
+		"last_name":    updatedData.LastName,
+		"email":        updatedData.Email,
+		"age":          updatedData.Age,
+		"degree":       updatedData.Degree,
+		"major":        updatedData.Major,
+		"passing_year": updatedData.PassingYear,
+		"updated_at":   time.Now(),
+	}
+
+	// Update user in database
+	result, err := utils.UserCollection.UpdateOne(
+		context.Background(),
+		bson.M{"username": username},
+		bson.M{"$set": update},
+	)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to update user profile",
+		})
+	}
+
+	if result.MatchedCount == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "User not found",
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"message": "Profile updated successfully",
+	})
+}
+
+func DeleteUserProfile(c *fiber.Ctx) error {
+	// Get username from URL
+	username := c.Params("username")
+
+	// Delete the user from database
+	result, err := utils.UserCollection.DeleteOne(
+		context.Background(),
+		bson.M{"username": username},
+	)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to delete user profile",
+		})
+	}
+
+	if result.DeletedCount == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "User not found",
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"message": "Profile deleted successfully",
 	})
 }
