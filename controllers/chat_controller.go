@@ -12,7 +12,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	//"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // ------------------------- Send Message --------------------------
@@ -68,6 +67,7 @@ func GetMessageByTopic(c *fiber.Ctx) error {
 	if err != nil {
 		utils.HandleError(c, fiber.StatusInternalServerError, "Failed to get messages")
 	}
+	defer cursor.Close(context.Background())
 
 	// Iterate and save chats to messages variable
 	for cursor.Next(context.Background()) {
@@ -79,8 +79,8 @@ func GetMessageByTopic(c *fiber.Ctx) error {
 
 	// If Chats is empty
 	if len(chats) == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "No message found for this topic",
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+			"chats": []models.Chat{},
 		})
 	}
 
