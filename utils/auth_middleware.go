@@ -1,7 +1,6 @@
-package middleware
+package utils
 
 import (
-	"github.com/aditya13raja/alumni-student-backend/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -17,7 +16,7 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	}
 
 	// Validate token
-	userID, err := utils.ValidateJWT(token)
+	userID, err := ValidateJWT(token)
 
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
