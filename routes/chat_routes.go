@@ -2,12 +2,13 @@ package routes
 
 import (
 	"github.com/aditya13raja/alumni-student-backend/controllers"
+	"github.com/aditya13raja/alumni-student-backend/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func ChatRoutes(app *fiber.App) {
-	chat := app.Group("/api/chat")
+	chat := app.Group("/api/chat", middleware.AuthMiddleware)
 
 	chat.Post("/send", controllers.SendMessage)
 	chat.Get("/get/:topic", controllers.GetMessageByTopic)

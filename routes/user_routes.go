@@ -8,7 +8,7 @@ import (
 )
 
 func UserRoutes(app *fiber.App) {
-	protected := app.Group("/api/user", middleware.AuthMiddleware)
+	profile := app.Group("/api/user", middleware.AuthMiddleware)
 
-	protected.Get("/:username", controllers.GetUserProfile)
+	profile.Get("/:username", controllers.GetUserProfile)
 }
