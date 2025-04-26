@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/aditya13raja/alumni-student-backend/models"
@@ -36,6 +37,21 @@ func CreateJobs(c *fiber.Ctx) error {
 		JobDescription: req.JobDescription,
 		CreatedAt:      time.Now(),
 	}
+
+	isAlumni, err := utils.IsAlumni(job.Username)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "User not found",
+		})
+	}
+
+	if !isAlumni {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "User not authorized",
+		})
+	}
+
+	fmt.Println(isAlumni)
 
 	_, err = utils.JobsCollection.InsertOne(context.Background(), job)
 	if err != nil {

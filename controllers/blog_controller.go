@@ -30,6 +30,19 @@ func SaveBlog(c *fiber.Ctx) error {
 		CreatedAt:  time.Now(),
 	}
 
+	isAlumni, err := utils.IsAlumni(blog.Username)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "User not found",
+		})
+	}
+
+	if !isAlumni {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "User not authorized",
+		})
+	}
+
 	_, err = utils.BlogsCollection.InsertOne(context.Background(), blog)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
