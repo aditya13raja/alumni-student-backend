@@ -28,7 +28,7 @@ type Jobs struct {
 	Username       string             `bson:"username" json:"username"`
 	JobRole        string             `bson:"job_role" json:"job_role"`
 	CompanyName    string             `bson:"company_name" json:"company_name"`
-	Location       string             `bson:"location", json:"location"`
+	Location       string             `bson:"location" json:"location"`
 	JobType        JobType            `bson:"job_type" json:"job_type"`
 	JobMode        JobMode            `bson:"job_mode" json:"job_mode"`
 	Validity       time.Time          `bson:"validity" json:"validity"`

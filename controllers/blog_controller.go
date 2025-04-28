@@ -84,24 +84,69 @@ func GetBlogById(c *fiber.Ctx) error {
 	})
 }
 
-func GetBlogsList(c *fiber.Ctx) error {
-	ctx := context.TODO()
-	opts := options.Find().SetSort(bson.D{{"created_at", -1}}).SetProjection(bson.M{
-		"heading":     1,
-		"username":    1,
-		"cover_image": 1,
-		"created_at":  1,
-	})
+// func GetBlogsList(c *fiber.Ctx) error {
+// 	ctx := context.TODO()
+// 	opts := options.Find().SetSort(bson.D{{"created_at", -1}}).SetProjection(bson.M{
+// 		"heading":     1,
+// 		"username":    1,
+// 		"cover_image": 1,
+// 		"created_at":  1,
+// 	})
+//
+// 	cursor, err := utils.BlogsCollection.Find(ctx, bson.M{}, opts)
+// 	if err != nil {
+// 		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
+// 	}
+//
+// 	var blogs []models.Blogs
+// 	if err := cursor.All(ctx, &blogs); err != nil {
+// 		return c.Status(500).JSON(fiber.Map{"error": "Failed to parse blogs"})
+// 	}
+//
+// 	return c.JSON(blogs)
+// }
+
+func fetchBlogs(ctx context.Context, limit int64) ([]models.Blogs, error) {
+	opts := options.Find().
+		SetSort(bson.D{{"created_at", -1}}).
+		SetProjection(bson.M{
+			"heading":     1,
+			"username":    1,
+			"cover_image": 1,
+			"created_at":  1,
+		})
+
+	if limit > 0 {
+		opts.SetLimit(limit)
+	}
 
 	cursor, err := utils.BlogsCollection.Find(ctx, bson.M{}, opts)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
+		return nil, err
 	}
 
 	var blogs []models.Blogs
 	if err := cursor.All(ctx, &blogs); err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to parse blogs"})
+		return nil, err
 	}
 
+	return blogs, nil
+}
+
+func GetAllBlogs(c *fiber.Ctx) error {
+	ctx := context.Background()
+	blogs, err := fetchBlogs(ctx, 0) // 0 means fetch all blogs
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch blogs"})
+	}
+	return c.JSON(blogs)
+}
+
+func GetLatestBlogs(c *fiber.Ctx) error {
+	ctx := context.Background()
+	blogs, err := fetchBlogs(ctx, 5)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch latest blogs"})
+	}
 	return c.JSON(blogs)
 }

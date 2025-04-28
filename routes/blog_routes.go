@@ -12,5 +12,6 @@ func BlogRoutes(app *fiber.App) {
 
 	blog.Post("/save-blog", controllers.SaveBlog)
 	blog.Get("/:id", controllers.GetBlogById)
-	blog.Get("/list/blogs", controllers.GetBlogsList)
+	blog.Get("/list/blogs", controllers.GetAllBlogs)
+	blog.Get("/latest/blogs", controllers.GetLatestBlogs)
 }
