@@ -12,5 +12,6 @@ func JobsRoutes(app *fiber.App) {
 
 	jobs.Post("/create", controllers.CreateJobs)
 	jobs.Get("/:id", controllers.GetJobById)
-	jobs.Get("/list/jobs", controllers.GetJobsList)
+	jobs.Get("/list/jobs", controllers.GetAllJobs)
+	jobs.Get("/latest/jobs", controllers.GetLatestJobs)
 }

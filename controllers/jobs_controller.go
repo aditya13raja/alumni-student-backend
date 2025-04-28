@@ -95,28 +95,47 @@ func GetJobById(c *fiber.Ctx) error {
 	})
 }
 
-func GetJobsList(c *fiber.Ctx) error {
-	ctx := context.TODO()
-	opts := options.Find().SetSort(bson.D{{"created_at", -1}}).SetProjection(bson.M{
-		"job_role":     1,
-		"company_name": 1,
-		"location":     1,
-		"job_type":     1,
-		"job_mode":     1,
-		"job_link":     1,
-		"created_at":   1,
-		"validity":     1,
-	})
-
-	cursor, err := utils.JobsCollection.Find(ctx, bson.M{}, opts)
+func fetchJobs(ctx context.Context, filter bson.M, opts *options.FindOptions) ([]models.Jobs, error) {
+	cursor, err := utils.JobsCollection.Find(ctx, filter, opts)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
+		return nil, err
 	}
 
 	var jobs []models.Jobs
 	if err := cursor.All(ctx, &jobs); err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to parse jobs"})
+		return nil, err
 	}
 
+	return jobs, nil
+}
+
+func GetAllJobs(c *fiber.Ctx) error {
+	ctx := context.Background()
+
+	// No limit or sorting for all jobs, just fetching them
+	opts := options.Find()
+
+	// Call fetchJobs to get all jobs
+	jobs, err := fetchJobs(ctx, bson.M{}, opts)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
+	}
+
+	// Return the list of jobs as JSON
+	return c.JSON(jobs)
+}
+
+func GetLatestJobs(c *fiber.Ctx) error {
+	ctx := context.Background()
+
+	// Sort by created_at in descending order and limit to 6
+	opts := options.Find().SetSort(bson.D{{"created_at", -1}}).SetLimit(6)
+
+	jobs, err := fetchJobs(ctx, bson.M{}, opts)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database error"})
+	}
+
+	// Return the list of latest jobs as JSON
 	return c.JSON(jobs)
 }
