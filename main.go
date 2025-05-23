@@ -54,6 +54,9 @@ func main() {
 	// Routes for jobs
 	routes.JobsRoutes(app)
 
+	// Routes for alumni
+	routes.AlumniRoutes(app)
+
 	// get port number
 	Port := configs.GetPort()
 
